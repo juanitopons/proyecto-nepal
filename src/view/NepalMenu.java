@@ -27,11 +27,8 @@ public class NepalMenu extends JMenuBar {
     
     private JMenuItem [] tablaItem = new JMenuItem[4];
     private String [] tablaItemName = { "Niños", "Centros", "Alergias", "Vacunas" };
-    private String [] tablaItemAction = { "menuPacientes", "menuClientes", "menuAlergias", "menuVacunas" };
-    
-    private JMenuItem [] explorerItem = new JMenuItem[1];
-    private String [] explorerItemName = { "Explorador de tablas" };
-    private String [] explorerItemAction = { "menuExplorar" };
+    private String [] tablaItemAction = { "menuPacientes", "menuCentros", "menuAlergias", "menuVacunas" };
+
     
     private JRadioButtonMenuItem [] languageRadioButton = new JRadioButtonMenuItem[2];
     private String [] languageButtonName = { "Español", "Inglés" };
@@ -97,25 +94,6 @@ public class NepalMenu extends JMenuBar {
         add(recursos);
         
         /*******************************************
-        * Menu Explorar
-        */
-        explorer = new JMenu("Explorar");
-        explorer.setFont(menuFont);
-        
-        // Para cada una de las entradas del menu file...
-        for (int i = 0; i < explorerItem.length; i++) {
-            explorerItem[i] = new JMenuItem(explorerItemName[i]);
-            explorerItem[i].setActionCommand(explorerItemAction[i]);
-            explorer.add(explorerItem[i]);
-        }
-        
-        // Anadimos el menu a la barra de menu
-        add(explorer);
-        
-     // Anadimos el menu a la barra de menu
-        add(recursos);
-        
-        /*******************************************
         * Menu Tools
         */
         tools = new JMenu("Herramientas");
@@ -155,9 +133,6 @@ public class NepalMenu extends JMenuBar {
             mi.addActionListener(menuActionListener);
         }
         for (JMenuItem mi : fileItem) {
-            mi.addActionListener(menuActionListener);
-        }
-        for (JMenuItem mi : explorerItem) {
             mi.addActionListener(menuActionListener);
         }
         for (JRadioButtonMenuItem mi : languageRadioButton) {

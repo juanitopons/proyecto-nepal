@@ -6,8 +6,6 @@ package controller;
 
 import view.NepalMenu;
 import view.NepalView;
-import view.ClienteView;
-import view.FrmAnimalia;
 import view.PacienteView;
 import java.awt.Component;
 import java.awt.Frame;
@@ -50,14 +48,6 @@ public class NepalController {
                 case "menuPacientes":
                 	JDialog pacienteView = new PacienteView(v, prop);
                 	pacienteView.setVisible(true);
-                    break;
-                case "menuClientes":
-                    Frame clienteView = new ClienteView();
-                    clienteView.setVisible(true);
-                    break;
-                case "menuExplorar":
-                    Frame frmAnimalia = new FrmAnimalia();
-                    frmAnimalia.setVisible(true);
                     break;
                 case "spanish":
                 	prop.setLanguage("spanish");
