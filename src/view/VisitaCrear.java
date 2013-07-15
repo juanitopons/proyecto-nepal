@@ -585,7 +585,7 @@ public class VisitaCrear extends JDialog {
 	                                            /*
 	                                             * Actualizamos el modelo
 	                                             */
-	                                            visitaTable.setModel(visitaDao.getTablaVisitas());
+	                                            visitaTable.setModel(visitaDao.getTablaVisitas(Integer.parseInt(idPaciente.getText())));
 	                                            visitaTable.updateUI();
 	                                             /*
 	                                             * Cerramos la ventana

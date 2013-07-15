@@ -53,6 +53,7 @@ public class VisitaDAO {
     private static final String READALL = 
             "SELECT idvisita AS ID, fechavisita AS FECHA, pelo AS PELO, vision AS VISTA, oidos AS OIDOS, dientes AS DIENTES, higiene AS HIGIENE, altura AS ALT, peso AS PESO, imc AS IMC, fc AS FC, tamax AS TAMX, tamin AS TAMIN, observaciones AS OBSERVACIONES " +
             " FROM visitas " +
+            " WHERE idpaciente = ?" +
             " ORDER BY fechavisita";
     
     private static final String UPDATE =
@@ -187,7 +188,7 @@ public class VisitaDAO {
 		 oracleConn.close();
     }
     
-    public DefaultTableModel getTablaVisitas() {
+    public DefaultTableModel getTablaVisitas(int idpaciente) {
         
         DefaultTableModel tablaVisitas = new DefaultTableModel();
         
@@ -199,6 +200,7 @@ public class VisitaDAO {
             Connection oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
             
             PreparedStatement s = oracleConn.prepareStatement(READALL);
+            s.setInt(1, idpaciente);
             ResultSet rs = s.executeQuery();
             ResultSetMetaData rsMd = rs.getMetaData();
             //La cantidad de columnas que tiene la consulta

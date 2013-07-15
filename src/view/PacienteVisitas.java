@@ -94,7 +94,7 @@ public class PacienteVisitas extends JDialog {
     private JTable createTablePanel() {
         
         JTable tp = new JTable();
-        tp.setModel(visitaDao.getTablaVisitas());
+        tp.setModel(visitaDao.getTablaVisitas(idpaciente));
         float[] hsb;
         /*
          * Cabecera de la tabla

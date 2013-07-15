@@ -71,7 +71,7 @@ public class VisitaBorrar {
 	                    /*
 	                    * Actualizamos el modelo
 	                    */
-	                    pacienteTable.setModel(visitaDao.getTablaVisitas());
+	                    pacienteTable.setModel(visitaDao.getTablaVisitas(paciente.getidPaciente()));
 	                    pacienteTable.updateUI();
                 }
         	}

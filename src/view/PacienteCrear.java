@@ -3,22 +3,27 @@ package view;
 import model.ItemMap;
 import model.Paciente;
 import model.PacienteDAO;
+import model.VisitaDAO;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import properties.MyProperties;
+import view.OrfanatoCrear;
+import view.OrfanatoBorrar;
 
 /**
  *
@@ -92,6 +97,10 @@ public class PacienteCrear extends JDialog {
         return c;
     }
     
+    private JDialog getInstance() {
+    	return this;
+    }
+    
     private JPanel createForm() {
 
         JPanel form = new JPanel();
@@ -114,19 +123,64 @@ public class PacienteCrear extends JDialog {
             JLabel idOrfanatoLabel = new JLabel(prop.getProperty("centro"));
             idOrfanatoLabel.setFont(labelFont);
             idOrfanatoLabel.setHorizontalAlignment(JLabel.CENTER);
-            idOrfanatoLabel.setPreferredSize(new Dimension(300, 25));
-            idOrfanatoLabel.setSize(300, 25);
-            idOrfanatoLabel.setMaximumSize(new Dimension(300, 25));
-            idOrfanatoLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            idOrfanatoLabel.setBorder(null);
             // - Field
             ComboBoxModel model;
             fkOrfanatos = pacienteDao.fkOrfanatos(); 
             model = new DefaultComboBoxModel(fkOrfanatos.values().toArray());
             idOrfanato = new JComboBox(model);
             idOrfanato.setFont(textfFont);
+            idOrfanato.setSize(new Dimension(200, 25));
+            idOrfanato.setPreferredSize(new Dimension(200, 25));
             // - Add
             form.add(idOrfanatoLabel);
-            form.add(idOrfanato);
+            JPanel moreless = new JPanel();
+            moreless.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+            moreless.setSize(new Dimension(300, 25));
+            moreless.setPreferredSize(new Dimension(300, 25));
+            moreless.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            idOrfanato.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            moreless.add(idOrfanato);
+            //botones mas menos
+            JButton more, less;
+            BufferedImage buttonIcon = ImageIO.read(new File("src/resources/plus.png"));
+            more = new JButton(new ImageIcon(buttonIcon));
+            more.setContentAreaFilled(false);
+            more.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e)
+                {
+                    //Execute when button is pressed
+                    OrfanatoCrear crearOrf = new OrfanatoCrear(getInstance(), idOrfanato, prop);
+                    crearOrf.setVisible(true);
+                }
+            });
+            //more.setVerticalAlignment(SwingConstants.TOP);
+            more.setBorder(BorderFactory.createEmptyBorder());
+            more.setSize(new Dimension(16, 16));
+            more.setPreferredSize(new Dimension(16, 16));
+            moreless.add(more);
+            moreless.add(Box.createHorizontalStrut(5));
+            
+            buttonIcon = ImageIO.read(new File("src/resources/less.png"));
+            less = new JButton(new ImageIcon(buttonIcon));
+            less.setContentAreaFilled(false);
+            less.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e)
+                {
+                    //Execute when button is pressed
+                    /* OrfanatoBorrar borrarOrf = new OrfanatoBorrar(getInstance(), prop);
+                    borrarOrf.setVisible(true);
+                    */
+                }
+            });
+            //less.setVerticalAlignment(SwingConstants.TOP);
+            less.setBorder(BorderFactory.createEmptyBorder());
+            less.setSize(new Dimension(16, 16));
+            less.setPreferredSize(new Dimension(16, 16));
+            
+            moreless.add(less);
+            
+            form.add(moreless);
             
             
             /* Fecha */
