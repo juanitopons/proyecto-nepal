@@ -39,9 +39,7 @@ public class NepalMenu extends JMenuBar {
     	//.setText a todo lo que deba hacerse setText (mirar Strings)
     	file.setText(prop.getProperty("fichero"));
     	recursos.setText(prop.getProperty("recursos"));
-    	//quitar explorer
-    	explorer.setText(prop.getProperty("explorar"));
-    	//
+
     	tools.setText(prop.getProperty("herramientas"));
     	idiomas.setText(prop.getProperty("idiomas"));
     	

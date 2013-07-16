@@ -261,7 +261,8 @@ public class PacienteEditar extends JDialog {
         antecedPaciente.setSize(280, 2);
         antecedPaciente.setText(paciente.getAntecedPaciente());
         JScrollPane scroll = new JScrollPane(antecedPaciente);
-        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         // - Add
         form.add(antecedPacienteLabel);

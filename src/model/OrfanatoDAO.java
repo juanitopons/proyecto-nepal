@@ -57,7 +57,7 @@ public class OrfanatoDAO {
         oracleConn.close();
     }
     
-    public void borrarPaciente(int idOrfanato) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public void borrarOrfanato(int idOrfanato) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
 		 /*
 		 * Conexion a la base de datos
 		 */

@@ -168,9 +168,8 @@ public class PacienteCrear extends JDialog {
                 public void actionPerformed(ActionEvent e)
                 {
                     //Execute when button is pressed
-                    /* OrfanatoBorrar borrarOrf = new OrfanatoBorrar(getInstance(), prop);
-                    borrarOrf.setVisible(true);
-                    */
+                    OrfanatoBorrar borrarOrf = new OrfanatoBorrar(getInstance(), idOrfanato, prop, (ItemMap)idOrfanato.getSelectedItem());
+                    
                 }
             });
             //less.setVerticalAlignment(SwingConstants.TOP);
