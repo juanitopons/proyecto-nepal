@@ -132,6 +132,7 @@ public class PacienteCrear extends JDialog {
             idOrfanato.setFont(textfFont);
             idOrfanato.setSize(new Dimension(200, 25));
             idOrfanato.setPreferredSize(new Dimension(200, 25));
+            idOrfanato.setSelectedItem(null);
             // - Add
             form.add(idOrfanatoLabel);
             JPanel moreless = new JPanel();
@@ -167,8 +168,12 @@ public class PacienteCrear extends JDialog {
             less.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e)
                 {
+                	if(idOrfanato.getSelectedItem()==null) {
+                		showErrorMessage("noshelter");
+                	} else {
                     //Execute when button is pressed
-                    OrfanatoBorrar borrarOrf = new OrfanatoBorrar(getInstance(), idOrfanato, prop, (ItemMap)idOrfanato.getSelectedItem());
+                		new OrfanatoBorrar(getInstance(), idOrfanato, prop, (ItemMap)idOrfanato.getSelectedItem());
+                	}
                     
                 }
             });
@@ -340,34 +345,38 @@ public class PacienteCrear extends JDialog {
                 String key = event.getActionCommand();
                 switch (key) {
                     case "botonpaciente":
-                        Paciente paciente = new Paciente();
-                        
-                        item = (ItemMap) idOrfanato.getSelectedItem();
-                        paciente.setidOrfanato(item.getId());
-                        paciente.setFecha(fecha);
-                        paciente.setNombrePaciente(nombrePaciente.getText());
-                        paciente.setApellidosPaciente(apellidosPaciente.getText());
-                        String genero = genPaciente.getSelectedItem().toString();
-                        if(genero.equalsIgnoreCase("hombre")) genero = "H";
-                        else genero = "M";
-                        paciente.setGenPaciente(genero);
-                        paciente.setEdadPaciente(Integer.parseInt(edadPaciente.getSelectedItem().toString()));
-                        paciente.setAntecedPaciente(antecedPaciente.getText());
-                        paciente.setFotoPaciente(urlFoto.getText());
-                        /*
-                        COPIAR FOTO A CARPETA DE APLICACIÓN OCULTA EN CARPETA DE USUARIO
-                        */
-
-                        pacienteDao.crearPaciente(paciente);
-                        /*
-                         * Actualizamos el modelo
-                         */
-                        pacienteTable.setModel(pacienteDao.getTablaPacientes());
-                        pacienteTable.updateUI();
-                         /*
-                         * Cerramos la ventana
-                         */
-                        dispose();
+                    	if(idOrfanato.getSelectedItem()==null) {
+                    		showErrorMessage("noshelter2");
+                    	} else {
+	                        Paciente paciente = new Paciente();
+	                        
+	                        item = (ItemMap) idOrfanato.getSelectedItem();
+	                        paciente.setidOrfanato(item.getId());
+	                        paciente.setFecha(fecha);
+	                        paciente.setNombrePaciente(nombrePaciente.getText());
+	                        paciente.setApellidosPaciente(apellidosPaciente.getText());
+	                        String genero = genPaciente.getSelectedItem().toString();
+	                        if(genero.equalsIgnoreCase("hombre")) genero = "H";
+	                        else genero = "M";
+	                        paciente.setGenPaciente(genero);
+	                        paciente.setEdadPaciente(Integer.parseInt(edadPaciente.getSelectedItem().toString()));
+	                        paciente.setAntecedPaciente(antecedPaciente.getText());
+	                        paciente.setFotoPaciente(urlFoto.getText());
+	                        /*
+	                        COPIAR FOTO A CARPETA DE APLICACIÓN OCULTA EN CARPETA DE USUARIO
+	                        */
+	
+	                        pacienteDao.crearPaciente(paciente);
+	                        /*
+	                         * Actualizamos el modelo
+	                         */
+	                        pacienteTable.setModel(pacienteDao.getTablaPacientes());
+	                        pacienteTable.updateUI();
+	                         /*
+	                         * Cerramos la ventana
+	                         */
+	                        dispose();
+                    	}
                         break;
                     case "openfile":
                     	FileNameExtensionFilter filter = new FileNameExtensionFilter(

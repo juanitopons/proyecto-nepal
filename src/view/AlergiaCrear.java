@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -20,30 +20,36 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
+import model.Alergia;
+import model.AlergiaDAO;
 import model.Orfanato;
 import model.OrfanatoDAO;
 import model.PacienteDAO;
 
 import properties.MyProperties;
 
-public class OrfanatoCrear extends JDialog {
-	private JTextField nombreOrfanato;
-	private JComboBox orfanatosList;
+public class AlergiaCrear extends JDialog {
+	private JTextField nombreAlergia;
+	private JTextArea descAlergia = new JTextArea(4, 12);
+	private JComboBox alergiasList;
 	private MyProperties prop;
-	private JDialog pacienteCrear;
-
-	public OrfanatoCrear(JDialog parent, JComboBox orfanatosList, MyProperties prop) {
+	private JDialog pacAlCrear;
+	
+	public AlergiaCrear(JDialog parent, JComboBox alergiasList, MyProperties prop) {
 		super(parent, prop.getProperty("titulo7"), ModalityType.DOCUMENT_MODAL);
         this.prop = prop;
-        this.orfanatosList = orfanatosList;
-        this.pacienteCrear = parent;
+        this.alergiasList = alergiasList;
+        this.pacAlCrear = parent;
 		
-        this.setSize(400, 200);
+        this.setSize(400, 260);
         this.setLocationRelativeTo(parent);
     	this.setLayout(new BorderLayout());
     	
@@ -63,7 +69,7 @@ public class OrfanatoCrear extends JDialog {
 	
     private JPanel createCabecera() {
         JPanel c = new JPanel();
-        JLabel l = new JLabel(prop.getProperty("aorfanto"), SwingConstants.LEFT);
+        JLabel l = new JLabel(prop.getProperty("aalergia2"), SwingConstants.LEFT);
         float[] hsb;
         hsb = Color.RGBtoHSB(230,230,230,new float[3]); 
         c.setBackground(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
@@ -107,22 +113,44 @@ public class OrfanatoCrear extends JDialog {
             /* Nombre */
             
             // - Label
-            JLabel nombreLabel = new JLabel(prop.getProperty("nombreo"));
+            JLabel nombreLabel = new JLabel(prop.getProperty("nombreal"));
             nombreLabel.setFont(labelFont);
             nombreLabel.setHorizontalAlignment(JLabel.CENTER);
             nombreLabel.setPreferredSize(new Dimension(200, 25));
             nombreLabel.setSize(200, 25);
             nombreLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
             // - Field
-            nombreOrfanato = new JTextField();
-            nombreOrfanato.setFont(textfFont);
-            nombreOrfanato.setColumns(13);
-            nombreOrfanato.setSize(new Dimension(200, 25));
-            nombreOrfanato.setPreferredSize(new Dimension(200, 25));
+            nombreAlergia = new JTextField();
+            nombreAlergia.setFont(textfFont);
+            nombreAlergia.setColumns(13);
+            nombreAlergia.setSize(new Dimension(200, 25));
+            nombreAlergia.setPreferredSize(new Dimension(200, 25));
             
             // - Add
             form.add(nombreLabel);
-            form.add(nombreOrfanato);
+            form.add(nombreAlergia);
+            
+            
+            /* Descripcion */
+
+            // - Label
+            JLabel descAlergiaLabel = new JLabel(prop.getProperty("descal"));
+            descAlergiaLabel.setFont(labelFont);
+            descAlergiaLabel.setHorizontalAlignment(JLabel.CENTER);
+            descAlergiaLabel.setPreferredSize(new Dimension(200, 25));
+            descAlergiaLabel.setSize(200, 25);
+            descAlergiaLabel.setMaximumSize(new Dimension(200, 25));
+            descAlergiaLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            // - Field
+            descAlergia.setFont(textfFont);
+            descAlergia.setEditable(true);
+            descAlergia.setSize(280, 2);
+            JScrollPane scroll = new JScrollPane(descAlergia);
+            scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+            // - Add
+            form.add(descAlergiaLabel);
+            form.add(scroll);
         }
         catch (Exception e) {
         	showErrorMessage();
@@ -149,8 +177,8 @@ public class OrfanatoCrear extends JDialog {
             boolean wasValid = true;
             
             // LENGTH control
-            int length = nombreOrfanato.getText().length();
-            if(length <= 0 || length > 60) {
+            int length = nombreAlergia.getText().length();
+            if(length <= 0 || length > 50) {
             	wasValid = false;
             }
             return wasValid;
@@ -162,23 +190,22 @@ public class OrfanatoCrear extends JDialog {
                 String key = event.getActionCommand();
                 switch (key) {
                     case "botonpaciente":
-                    	Orfanato orfanato = new Orfanato();
+                    	Alergia alergia = new Alergia();
                     	if(checkNombreField()) {
-                    		orfanato.setNombreOrfanato(nombreOrfanato.getText());
-                    		OrfanatoDAO orfanatoDao = new OrfanatoDAO();
-                            orfanatoDao.crearOrfanato(orfanato);
+                    		alergia.setNombreAlergia(nombreAlergia.getText());
+                    		AlergiaDAO alergiaDao = new AlergiaDAO(prop);
+                            alergiaDao.crearAlergia(alergia);
                             /*
                              * Actualizamos el JComboBox
                              */
-                            PacienteDAO pacienteDao = new PacienteDAO();
-                            Map fkOrfanatos = null;
+                            Map fkAlergias = null;
 							try {
-								fkOrfanatos = pacienteDao.fkOrfanatos();
+								fkAlergias = alergiaDao.fkAlergias();
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} 
-                            orfanatosList.setModel(new DefaultComboBoxModel(fkOrfanatos.values().toArray()));
+                            alergiasList.setModel(new DefaultComboBoxModel(fkAlergias.values().toArray()));
                             dispose();
                     	} else {
                     		showErrorMessage(1);
@@ -194,7 +221,7 @@ public class OrfanatoCrear extends JDialog {
     private void showErrorMessage() {
     	Object[] options = {prop.getProperty("cerrar")};
     	JOptionPane infoPane = new JOptionPane(
-    			prop.getProperty("error4"),
+    			prop.getProperty("error5"),
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.ERROR_MESSAGE,
                 null,
@@ -209,16 +236,16 @@ public class OrfanatoCrear extends JDialog {
     private void showErrorMessage(int i) {
     	Object[] options = {prop.getProperty("cerrar")};
     	JOptionPane infoPane = new JOptionPane(
-    			prop.getProperty("error4"+String.valueOf(i)),
+    			prop.getProperty("error5"+String.valueOf(i)),
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.ERROR_MESSAGE,
                 null,
                 options,
                 prop.getProperty("cerrar"));
     	JDialog dialog = new JDialog();
-    	dialog = infoPane.createDialog(pacienteCrear, prop.getProperty("error"));
-    	dialog.setLocationRelativeTo(pacienteCrear);
+    	dialog = infoPane.createDialog(pacAlCrear, prop.getProperty("error"));
+    	dialog.setLocationRelativeTo(pacAlCrear);
     	dialog.setVisible(true);
     }
-	
+
 }

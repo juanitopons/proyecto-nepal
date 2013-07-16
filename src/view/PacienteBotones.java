@@ -31,10 +31,10 @@ public class PacienteBotones extends JPanel {
 	private static JPanel panel1;
 	private static JPanel panel2;
 	private static JPanel mainpanel;
-    private static JButton[] button = new JButton[2];
+    private static JButton[] button = new JButton[3];
     private static JButton[] button2 = new JButton[3];
-    private static String[] buttonName = { "Visitas", "Alergias" };
-    private static String[] buttonAction = { "visitas", "alergias" };
+    private static String[] buttonName = { "Visitas", "Alergias", "Vacunas" };
+    private static String[] buttonAction = { "visitas", "alergias", "vacunas" };
     private static String[] buttonName2 = { "Nuevo paciente", "Editar paciente", "Borrar paciente" };
     private static String[] buttonAction2 = { "insertar", "editar", "borrar" };
     private JTable pacienteTable;
@@ -54,19 +54,17 @@ public class PacienteBotones extends JPanel {
         mainpanel.setMaximumSize(new Dimension(500, 80));
         
         panel1 = new JPanel();
-        panel1.setLayout(new GridLayout(0,2, 100, 10));
+        panel1.setLayout(new GridLayout(0,3, 10, 10));
         panel1.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
 		 for (int i = 0; i < button.length; i++) {
 	         button[i] = new JButton(buttonName[i]);
 	         button[i].setActionCommand(buttonAction[i]);
 	         button[i].addActionListener(pacienteButtonListener);
-	         button[i].setPreferredSize(new Dimension(80, 50));
-	         button[i].setSize(80, 50);
-	         button[i].setMaximumSize(new Dimension(80, 50));
 	         panel1.add(button[i]);
 	     }
 		 button[0].setText(prop.getProperty("visitas"));
 		 button[1].setText(prop.getProperty("alergias"));
+		 button[2].setText(prop.getProperty("vacunas"));
 		 mainpanel.add(panel1, BorderLayout.CENTER);
 		 
 		panel2 = new JPanel();
@@ -102,14 +100,17 @@ public class PacienteBotones extends JPanel {
             String key   = event.getActionCommand();
             switch (key) {
             	case "alergias":
-            		/*row = pacienteTable.getSelectedRow();
+            		row = pacienteTable.getSelectedRow();
                     if (row == -1) {
                         showSelectionMessage();
                     }
                     else {
                         idpaciente = (int)pacienteTable.getModel().getValueAt(row, 0);
-                        PacienteAlergias pacienteAlergias = new PacienteAlergias(idpaciente);
-                    }*/
+                        PacienteAlergias pacienteAlergias = new PacienteAlergias(pacienteView, prop, idpaciente);
+                        pacienteAlergias.setVisible(true);
+                    }
+            		break;
+            	case "vacunas":
             		break;
             	case "visitas":
             		row = pacienteTable.getSelectedRow();

@@ -25,8 +25,8 @@ public class NepalMenu extends JMenuBar {
     private String [] fileItemName = { "Exportar BBDD...", "Salir" };
     private String [] fileItemAction = { "menuExportar", "menuExit" };
     
-    private JMenuItem [] tablaItem = new JMenuItem[4];
-    private String [] tablaItemName = { "Niños", "Centros", "Alergias", "Vacunas" };
+    private JMenuItem [] tablaItem = new JMenuItem[1];
+    private String [] tablaItemName = { "Niños"};
     private String [] tablaItemAction = { "menuPacientes", "menuCentros", "menuAlergias", "menuVacunas" };
 
     
@@ -47,9 +47,6 @@ public class NepalMenu extends JMenuBar {
     	fileItem[1].setText(prop.getProperty("salir"));
     	
     	tablaItem[0].setText(prop.getProperty("pacientes"));
-    	tablaItem[1].setText(prop.getProperty("centros"));
-    	tablaItem[2].setText(prop.getProperty("alergias"));
-    	tablaItem[3].setText(prop.getProperty("vacunas"));
     	
     	
     	languageRadioButton[0].setText(prop.getProperty("espanol"));
