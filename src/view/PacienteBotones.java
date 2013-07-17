@@ -4,7 +4,9 @@ import model.PacienteDAO;
 import model.VisitaDAO;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 
 import properties.MyProperties;
 
@@ -52,21 +56,35 @@ public class PacienteBotones extends JPanel {
         mainpanel.setPreferredSize(new Dimension(500, 80));
         mainpanel.setSize(500, 80);
         mainpanel.setMaximumSize(new Dimension(500, 80));
-        
+        float[] hsb;
+        /*hsb = Color.RGBtoHSB(180,180,180,new float[3]);
+        mainpanel.setBackground(Color.BLACK);
+        mainpanel.setForeground(Color.BLACK);
+        */
+        JPanel container_panel = new JPanel();
         panel1 = new JPanel();
         panel1.setLayout(new GridLayout(0,3, 10, 10));
-        panel1.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
 		 for (int i = 0; i < button.length; i++) {
 	         button[i] = new JButton(buttonName[i]);
 	         button[i].setActionCommand(buttonAction[i]);
 	         button[i].addActionListener(pacienteButtonListener);
 	         panel1.add(button[i]);
 	     }
-		 button[0].setText(prop.getProperty("visitas"));
-		 button[1].setText(prop.getProperty("alergias"));
-		 button[2].setText(prop.getProperty("vacunas"));
-		 mainpanel.add(panel1, BorderLayout.CENTER);
+		button[0].setText(prop.getProperty("visitas"));
+		button[1].setText(prop.getProperty("alergias"));
+		button[2].setText(prop.getProperty("vacunas"));
 		 
+		
+		hsb = Color.RGBtoHSB(200,200,200,new float[3]); 
+		Border border = new MatteBorder(0, 0, 2, 0, Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
+		panel1.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+		container_panel.setBorder(border);
+		 
+		container_panel.setLayout(new GridLayout(0,1, 10, 10));
+
+		container_panel.add(panel1);
+		mainpanel.add(container_panel, BorderLayout.CENTER);
+		
 		panel2 = new JPanel();
 		panel2.setLayout(new GridLayout(0,3, 10, 10));
 		panel2.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
@@ -111,6 +129,15 @@ public class PacienteBotones extends JPanel {
                     }
             		break;
             	case "vacunas":
+            		row = pacienteTable.getSelectedRow();
+                    if (row == -1) {
+                        showSelectionMessage();
+                    }
+                    else {
+                        idpaciente = (int)pacienteTable.getModel().getValueAt(row, 0);
+                        PacienteVacunas pacienteVacunas = new PacienteVacunas(pacienteView, prop, idpaciente);
+                        pacienteVacunas.setVisible(true);
+                    }
             		break;
             	case "visitas":
             		row = pacienteTable.getSelectedRow();

@@ -38,7 +38,7 @@ public class PacienteCrear extends JDialog {
     private JTextField apellidosPaciente = new JTextField();
     private JComboBox genPaciente;
     private JComboBox edadPaciente;
-    private JTextArea antecedPaciente = new JTextArea();
+    private JTextArea antecedPaciente = new JTextArea(4, 22);
     private JFileChooser fotoPaciente = new JFileChooser();
     private JTextField urlFoto = new JTextField();
     
@@ -53,10 +53,10 @@ public class PacienteCrear extends JDialog {
     	super(frame, prop.getProperty("titulo4"), ModalityType.DOCUMENT_MODAL);
         this.prop = prop;
         this.pacienteTable = pacienteTable;
-        this.setSize(600, 400);
+        this.setSize(600, 500);
     	this.setLocationRelativeTo(frame);
     	this.setLayout(new BorderLayout());
-        
+        this.setResizable(false);
 
         /* Cabecera */
         JPanel cabecera = createCabecera();
@@ -104,13 +104,14 @@ public class PacienteCrear extends JDialog {
     private JPanel createForm() {
 
         JPanel form = new JPanel();
+        form.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
         Font labelFont = new Font("sans-serif",Font.BOLD,12);
         Font textfFont = new Font("sans-serif",Font.BOLD,12);
         
         try {  
         
         	float[] hsb;
-            form.setLayout(new GridLayout(0,2));
+        	form.setLayout(new FlowLayout(FlowLayout.LEADING));
             hsb = Color.RGBtoHSB(240,240,240,new float[3]);
             form.setBackground(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
             
@@ -123,7 +124,10 @@ public class PacienteCrear extends JDialog {
             JLabel idOrfanatoLabel = new JLabel(prop.getProperty("centro"));
             idOrfanatoLabel.setFont(labelFont);
             idOrfanatoLabel.setHorizontalAlignment(JLabel.CENTER);
-            idOrfanatoLabel.setBorder(null);
+            idOrfanatoLabel.setPreferredSize(new Dimension(280, 28));
+            idOrfanatoLabel.setSize(280, 28);
+            idOrfanatoLabel.setMaximumSize(new Dimension(280, 28));
+            idOrfanatoLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
             // - Field
             ComboBoxModel model;
             fkOrfanatos = pacienteDao.fkOrfanatos(); 
@@ -137,8 +141,8 @@ public class PacienteCrear extends JDialog {
             form.add(idOrfanatoLabel);
             JPanel moreless = new JPanel();
             moreless.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
-            moreless.setSize(new Dimension(300, 25));
-            moreless.setPreferredSize(new Dimension(300, 25));
+            moreless.setSize(new Dimension(280, 25));
+            moreless.setPreferredSize(new Dimension(280, 25));
             moreless.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
             idOrfanato.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
             moreless.add(idOrfanato);
@@ -200,13 +204,15 @@ public class PacienteCrear extends JDialog {
             JLabel nombrePacienteLabel = new JLabel(prop.getProperty("nombren"));
             nombrePacienteLabel.setFont(labelFont);
             nombrePacienteLabel.setHorizontalAlignment(JLabel.CENTER);
-            nombrePacienteLabel.setPreferredSize(new Dimension(300, 25));
-            nombrePacienteLabel.setSize(300, 25);
-            nombrePacienteLabel.setMaximumSize(new Dimension(300, 25));
-            nombrePacienteLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            nombrePacienteLabel.setPreferredSize(new Dimension(280, 28));
+            nombrePacienteLabel.setSize(280, 28);
+            nombrePacienteLabel.setMaximumSize(new Dimension(280, 28));
             // - Field
             nombrePaciente.setFont(textfFont);
-            nombrePaciente.setColumns(30);
+            nombrePaciente.setColumns(23);
+            nombrePaciente.setPreferredSize(new Dimension(280, 28));
+            nombrePaciente.setSize(280, 28);
+            nombrePaciente.setMaximumSize(new Dimension(280, 28));
             // - Add
             form.add(nombrePacienteLabel);
             form.add(nombrePaciente);
@@ -218,13 +224,15 @@ public class PacienteCrear extends JDialog {
             JLabel apellidosPacienteLabel = new JLabel(prop.getProperty("apellidosn"));
             apellidosPacienteLabel.setFont(labelFont);
             apellidosPacienteLabel.setHorizontalAlignment(JLabel.CENTER);
-            apellidosPacienteLabel.setPreferredSize(new Dimension(300, 25));
-            apellidosPacienteLabel.setSize(300, 25);
-            apellidosPacienteLabel.setMaximumSize(new Dimension(300, 25));
-            apellidosPacienteLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            apellidosPacienteLabel.setPreferredSize(new Dimension(280, 28));
+            apellidosPacienteLabel.setSize(280, 28);
+            apellidosPacienteLabel.setMaximumSize(new Dimension(280, 28));
             // - Field
             apellidosPaciente.setFont(textfFont);
-            apellidosPaciente.setColumns(30);
+            apellidosPaciente.setColumns(23);
+            apellidosPaciente.setPreferredSize(new Dimension(280, 28));
+            apellidosPaciente.setSize(280, 28);
+            apellidosPaciente.setMaximumSize(new Dimension(280, 28));
             // - Add
             form.add(apellidosPacienteLabel);
             form.add(apellidosPaciente);
@@ -236,14 +244,16 @@ public class PacienteCrear extends JDialog {
             JLabel genPacienteLabel = new JLabel(prop.getProperty("genn"));
             genPacienteLabel.setFont(labelFont);
             genPacienteLabel.setHorizontalAlignment(JLabel.CENTER);
-            genPacienteLabel.setPreferredSize(new Dimension(300, 25));
-            genPacienteLabel.setSize(300, 25);
-            genPacienteLabel.setMaximumSize(new Dimension(300, 25));
-            genPacienteLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            genPacienteLabel.setPreferredSize(new Dimension(280, 28));
+            genPacienteLabel.setSize(280, 28);
+            genPacienteLabel.setMaximumSize(new Dimension(280, 28));
             // - Field
             genPaciente = new JComboBox();
             genPaciente.setFont(textfFont);
             genPaciente.setModel(new DefaultComboBoxModel(new String[] {"hombre","mujer"}));
+            genPaciente.setPreferredSize(new Dimension(280, 28));
+            genPaciente.setSize(280, 28);
+            genPaciente.setMaximumSize(new Dimension(280, 28));
             // - Add
             form.add(genPacienteLabel);
             form.add(genPaciente);
@@ -255,16 +265,18 @@ public class PacienteCrear extends JDialog {
             JLabel edadPacienteLabel = new JLabel(prop.getProperty("edadn"));
             edadPacienteLabel.setFont(labelFont);
             edadPacienteLabel.setHorizontalAlignment(JLabel.CENTER);
-            edadPacienteLabel.setPreferredSize(new Dimension(300, 25));
-            edadPacienteLabel.setSize(300, 25);
-            edadPacienteLabel.setMaximumSize(new Dimension(300, 25));
-            edadPacienteLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            edadPacienteLabel.setPreferredSize(new Dimension(280, 28));
+            edadPacienteLabel.setSize(280, 28);
+            edadPacienteLabel.setMaximumSize(new Dimension(280, 28));
             // - Field
             edadPaciente = new JComboBox();
             edadPaciente.setFont(textfFont);
             String edades[] = new String[50];
             for(int i = 0; i < edades.length; i++) edades[i]=String.valueOf(i+1);
             edadPaciente.setModel(new DefaultComboBoxModel(edades));
+            edadPaciente.setPreferredSize(new Dimension(280, 28));
+            edadPaciente.setSize(280, 28);
+            edadPaciente.setMaximumSize(new Dimension(280, 28));
             // - Add
             form.add(edadPacienteLabel);
             form.add(edadPaciente);
@@ -277,13 +289,12 @@ public class PacienteCrear extends JDialog {
             antecedPacienteLabel.setFont(labelFont);
             antecedPacienteLabel.setHorizontalAlignment(JLabel.CENTER);
             antecedPacienteLabel.setPreferredSize(new Dimension(300, 25));
-            antecedPacienteLabel.setSize(300, 25);
-            antecedPacienteLabel.setMaximumSize(new Dimension(300, 25));
-            antecedPacienteLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            antecedPacienteLabel.setPreferredSize(new Dimension(280, 28));
+            antecedPacienteLabel.setSize(280, 28);
+            antecedPacienteLabel.setMaximumSize(new Dimension(280, 28));
             // - Field
             antecedPaciente.setFont(textfFont);
             antecedPaciente.setEditable(true);
-            antecedPaciente.setSize(280, 2);
             JScrollPane scroll = new JScrollPane(antecedPaciente);
             scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -298,19 +309,33 @@ public class PacienteCrear extends JDialog {
             JLabel fotoPacienteLabel = new JLabel(prop.getProperty("picturen"));
             fotoPacienteLabel.setFont(labelFont);
             fotoPacienteLabel.setHorizontalAlignment(JLabel.CENTER);
-            fotoPacienteLabel.setPreferredSize(new Dimension(300, 25));
-            fotoPacienteLabel.setSize(300, 25);
-            fotoPacienteLabel.setMaximumSize(new Dimension(300, 25));
-            fotoPacienteLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            fotoPacienteLabel.setPreferredSize(new Dimension(280, 28));
+            fotoPacienteLabel.setSize(280, 28);
+            fotoPacienteLabel.setMaximumSize(new Dimension(280, 28));
             // - Field
             JButton openButton = new JButton("Open a File...");
             openButton.setActionCommand("openfile");
             openButton.addActionListener(new ButtonListener(this));
+            openButton.setPreferredSize(new Dimension(280, 28));
+            openButton.setSize(280, 28);
+            openButton.setMaximumSize(new Dimension(280, 28));
             urlFoto.setEditable(false);
+            urlFoto.setPreferredSize(new Dimension(480, 35));
+            urlFoto.setSize(480, 35);
+            urlFoto.setBorder(null);
+            urlFoto.setMaximumSize(new Dimension(480, 35));
             // - Add
             form.add(fotoPacienteLabel);
-            form.add(openButton);
-            form.add(urlFoto);
+            
+            JPanel foto = new JPanel();
+            foto.setBorder(null);
+            foto.setLayout(new BoxLayout(foto, BoxLayout.Y_AXIS));
+            foto.setPreferredSize(new Dimension(280, 65));
+            foto.setSize(280, 65);
+            foto.setMaximumSize(new Dimension(280, 65));
+            foto.add(openButton);
+            foto.add(urlFoto);
+            form.add(foto);
 
         }
         catch (Exception e) {

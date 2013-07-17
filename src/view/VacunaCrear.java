@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -28,26 +29,23 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
-import model.Alergia;
-import model.AlergiaDAO;
-import model.Orfanato;
-import model.OrfanatoDAO;
-import model.PacienteDAO;
-
+import model.Vacuna;
+import model.VacunaDAO;
 import properties.MyProperties;
 
-public class AlergiaCrear extends JDialog {
-	private JTextField nombreAlergia;
-	private JTextArea descAlergia = new JTextArea(4, 12);
-	private JComboBox alergiasList;
+public class VacunaCrear extends JDialog {
+	private JTextField nombreVacuna;
+	private JComboBox edadMin;
+	private JComboBox edadMax;
+	private JComboBox vacunasList;
 	private MyProperties prop;
-	private JDialog pacAlCrear;
+	private JDialog pacVacCrear;
 	
-	public AlergiaCrear(JDialog parent, JComboBox alergiasList, MyProperties prop) {
-		super(parent, prop.getProperty("titulo7"), ModalityType.DOCUMENT_MODAL);
+	public VacunaCrear(JDialog parent, JComboBox vacunasList, MyProperties prop) {
+		super(parent, prop.getProperty("titulo10"), ModalityType.DOCUMENT_MODAL);
         this.prop = prop;
-        this.alergiasList = alergiasList;
-        this.pacAlCrear = parent;
+        this.vacunasList = vacunasList;
+        this.pacVacCrear = parent;
 		
         this.setSize(400, 260);
         this.setLocationRelativeTo(parent);
@@ -70,7 +68,7 @@ public class AlergiaCrear extends JDialog {
 	
     private JPanel createCabecera() {
         JPanel c = new JPanel();
-        JLabel l = new JLabel(prop.getProperty("aalergia2"), SwingConstants.LEFT);
+        JLabel l = new JLabel(prop.getProperty("avacuna2"), SwingConstants.LEFT);
         float[] hsb;
         hsb = Color.RGBtoHSB(230,230,230,new float[3]); 
         c.setBackground(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
@@ -93,18 +91,12 @@ public class AlergiaCrear extends JDialog {
     }
     
     private JPanel createForm() {
-        
-        //ClienteDAO clienteDao = new ClienteDAO();
-            
         JPanel form = new JPanel();
         form.setLayout(new FlowLayout(FlowLayout.LEADING));
         Font labelFont = new Font("sans-serif",Font.BOLD,12);
         Font textfFont = new Font("sans-serif",Font.BOLD,12);
         
         try {  
-        
-            //listaClientes = clienteDao.getTListaClientes();
-            //claves = listaClientes.keySet().toArray();
         	float[] hsb;
             hsb = Color.RGBtoHSB(240,240,240,new float[3]);
             form.setBackground(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
@@ -114,44 +106,68 @@ public class AlergiaCrear extends JDialog {
             /* Nombre */
             
             // - Label
-            JLabel nombreLabel = new JLabel(prop.getProperty("nombreal"));
+            JLabel nombreLabel = new JLabel(prop.getProperty("nombrevac"));
             nombreLabel.setFont(labelFont);
             nombreLabel.setHorizontalAlignment(JLabel.CENTER);
             nombreLabel.setPreferredSize(new Dimension(200, 25));
             nombreLabel.setSize(200, 25);
-            nombreLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
             // - Field
-            nombreAlergia = new JTextField();
-            nombreAlergia.setFont(textfFont);
-            nombreAlergia.setColumns(13);
-            nombreAlergia.setSize(new Dimension(200, 25));
-            nombreAlergia.setPreferredSize(new Dimension(200, 25));
+            nombreVacuna = new JTextField();
+            nombreVacuna.setFont(textfFont);
+            nombreVacuna.setColumns(13);
+            nombreVacuna.setSize(new Dimension(200, 25));
+            nombreVacuna.setPreferredSize(new Dimension(200, 25));
             
             // - Add
             form.add(nombreLabel);
-            form.add(nombreAlergia);
+            form.add(nombreVacuna);
             
             
-            /* Descripcion */
+            /* Edad Mínima */
 
             // - Label
-            JLabel descAlergiaLabel = new JLabel(prop.getProperty("descal"));
-            descAlergiaLabel.setFont(labelFont);
-            descAlergiaLabel.setHorizontalAlignment(JLabel.CENTER);
-            descAlergiaLabel.setPreferredSize(new Dimension(200, 25));
-            descAlergiaLabel.setSize(200, 25);
-            descAlergiaLabel.setMaximumSize(new Dimension(200, 25));
-            descAlergiaLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+            JLabel edadminVacunaLabel = new JLabel(prop.getProperty("edadminvac"));
+            edadminVacunaLabel.setFont(labelFont);
+            edadminVacunaLabel.setHorizontalAlignment(JLabel.CENTER);
+            edadminVacunaLabel.setPreferredSize(new Dimension(200, 25));
+            edadminVacunaLabel.setSize(200, 25);
+            edadminVacunaLabel.setMaximumSize(new Dimension(200, 25));
             // - Field
-            descAlergia.setFont(textfFont);
-            descAlergia.setEditable(true);
-            descAlergia.setSize(280, 2);
-            JScrollPane scroll = new JScrollPane(descAlergia);
-            scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            edadMin = new JComboBox();
+            edadMin.setFont(textfFont);
+            edadMin.setSize(new Dimension(120, 25));
+            edadMin.setPreferredSize(new Dimension(120, 25));
+            String[] edades = new String[99];
+            int inicio = 0;
+            for(int i=0; i<edades.length; i++) {
+            	inicio+=1;
+            	edades[i] = String.valueOf(inicio);
+            }
+            edadMin.setModel(new DefaultComboBoxModel(edades));
 
             // - Add
-            form.add(descAlergiaLabel);
-            form.add(scroll);
+            form.add(edadminVacunaLabel);
+            form.add(edadMin);
+            
+            /* Edad Máxima */
+
+            // - Label
+            JLabel edadMaxVacunaLabel = new JLabel(prop.getProperty("edadmaxvac"));
+            edadMaxVacunaLabel.setFont(labelFont);
+            edadMaxVacunaLabel.setHorizontalAlignment(JLabel.CENTER);
+            edadMaxVacunaLabel.setPreferredSize(new Dimension(200, 25));
+            edadMaxVacunaLabel.setSize(200, 25);
+            edadMaxVacunaLabel.setMaximumSize(new Dimension(200, 25));
+            // - Field
+            edadMax = new JComboBox();
+            edadMax.setFont(textfFont);
+            edadMax.setSize(new Dimension(120, 25));
+            edadMax.setPreferredSize(new Dimension(120, 25));
+            edadMax.setModel(new DefaultComboBoxModel(edades));
+
+            // - Add
+            form.add(edadMaxVacunaLabel);
+            form.add(edadMax);
         }
         catch (Exception e) {
         	showErrorMessage();
@@ -178,7 +194,7 @@ public class AlergiaCrear extends JDialog {
             boolean wasValid = true;
             
             // LENGTH control
-            int length = nombreAlergia.getText().length();
+            int length = nombreVacuna.getText().length();
             if(length <= 0 || length > 50) {
             	wasValid = false;
             }
@@ -191,22 +207,22 @@ public class AlergiaCrear extends JDialog {
                 String key = event.getActionCommand();
                 switch (key) {
                     case "botonpaciente":
-                    	Alergia alergia = new Alergia();
+                    	Vacuna vacuna = new Vacuna();
                     	if(checkNombreField()) {
-                    		alergia.setNombreAlergia(nombreAlergia.getText());
-                    		AlergiaDAO alergiaDao = new AlergiaDAO(prop);
-                            alergiaDao.crearAlergia(alergia);
+                    		vacuna.setNombreVacuna(nombreVacuna.getText());
+                    		VacunaDAO vacunaDao = new VacunaDAO(prop);
+                            vacunaDao.crearVacuna(vacuna);
                             /*
                              * Actualizamos el JComboBox
                              */
-                            Map fkAlergias = null;
+                            Map fkVacunas = null;
 							try {
-								fkAlergias = alergiaDao.fkAlergias();
+								fkVacunas = vacunaDao.fkVacunas();
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} 
-                            alergiasList.setModel(new DefaultComboBoxModel(fkAlergias.values().toArray()));
+                            vacunasList.setModel(new DefaultComboBoxModel(fkVacunas.values().toArray()));
                             dispose();
                     	} else {
                     		showErrorMessage(1);
@@ -222,7 +238,7 @@ public class AlergiaCrear extends JDialog {
     private void showErrorMessage() {
     	Object[] options = {prop.getProperty("cerrar")};
     	JOptionPane infoPane = new JOptionPane(
-    			prop.getProperty("error5"),
+    			prop.getProperty("error6"),
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.ERROR_MESSAGE,
                 null,
@@ -237,15 +253,15 @@ public class AlergiaCrear extends JDialog {
     private void showErrorMessage(int i) {
     	Object[] options = {prop.getProperty("cerrar")};
     	JOptionPane infoPane = new JOptionPane(
-    			prop.getProperty("error5"+String.valueOf(i)),
+    			prop.getProperty("error6"+String.valueOf(i)),
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.ERROR_MESSAGE,
                 null,
                 options,
                 prop.getProperty("cerrar"));
     	JDialog dialog = new JDialog();
-    	dialog = infoPane.createDialog(pacAlCrear, prop.getProperty("error"));
-    	dialog.setLocationRelativeTo(pacAlCrear);
+    	dialog = infoPane.createDialog(pacVacCrear, prop.getProperty("error"));
+    	dialog.setLocationRelativeTo(pacVacCrear);
     	dialog.setVisible(true);
     }
 
