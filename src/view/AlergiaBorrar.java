@@ -81,6 +81,11 @@ public class AlergiaBorrar {
                 }
         	}
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+        	try {
+				alergiaDao.closeConn();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+			}
         	errorMessage();
         }
     }

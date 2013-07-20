@@ -4,6 +4,7 @@
  */
 
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
 import controller.NepalController;
@@ -26,5 +27,7 @@ public class Nepal {
 
         view.setLocationRelativeTo(null);
         view.setVisible(true);// TODO code application logic here
+        ImageIcon icon = new ImageIcon(view.getClass().getClassLoader().getResource("resources/nepal_ico.jpg"));
+        view.setIconImage(icon.getImage());
     }
 }

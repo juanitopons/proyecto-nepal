@@ -83,6 +83,11 @@ public class OrfanatoBorrar {
                 }
         	}
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+        	try {
+				orfanatoDao.closeConn();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+			}
         	errorMessage();
         }
     }

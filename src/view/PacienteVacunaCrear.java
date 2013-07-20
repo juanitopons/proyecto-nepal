@@ -180,8 +180,8 @@ public class PacienteVacunaCrear extends JDialog {
             moreless.add(idVacuna);
             //botones mas menos
             JButton more, less;
-            BufferedImage buttonIcon = ImageIO.read(new File("src/resources/plus.png"));
-            more = new JButton(new ImageIcon(buttonIcon));
+            ImageIcon plus = new ImageIcon(getClass().getClassLoader().getResource("resources/plus.png"));
+            more = new JButton(plus);
             more.setContentAreaFilled(false);
             more.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e)
@@ -198,8 +198,8 @@ public class PacienteVacunaCrear extends JDialog {
             moreless.add(more);
             moreless.add(Box.createHorizontalStrut(5));
             
-            buttonIcon = ImageIO.read(new File("src/resources/less.png"));
-            less = new JButton(new ImageIcon(buttonIcon));
+            ImageIcon less_ic = new ImageIcon(getClass().getClassLoader().getResource("resources/less.png"));
+            less = new JButton(less_ic);
             less.setContentAreaFilled(false);
             less.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e)
@@ -369,9 +369,12 @@ public class PacienteVacunaCrear extends JDialog {
                 }
             }
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {                
-            	/* We just manage the TRIGGER
-            	 * `pacientes_before_trigger` BEFORE INSERT ON `pacientes`
-            	 */
+            	try {
+    				vacunaDao.closeConn();
+    			} catch (SQLException e1) {
+    				// TODO Auto-generated catch block
+    			}
+            	showErrorMessage();
             }
     	}
     }

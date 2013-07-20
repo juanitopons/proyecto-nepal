@@ -148,8 +148,8 @@ public class PacienteCrear extends JDialog {
             moreless.add(idOrfanato);
             //botones mas menos
             JButton more, less;
-            BufferedImage buttonIcon = ImageIO.read(new File("src/resources/plus.png"));
-            more = new JButton(new ImageIcon(buttonIcon));
+            ImageIcon plus = new ImageIcon(getClass().getClassLoader().getResource("resources/plus.png"));
+            more = new JButton(plus);
             more.setContentAreaFilled(false);
             more.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e)
@@ -166,8 +166,8 @@ public class PacienteCrear extends JDialog {
             moreless.add(more);
             moreless.add(Box.createHorizontalStrut(5));
             
-            buttonIcon = ImageIO.read(new File("src/resources/less.png"));
-            less = new JButton(new ImageIcon(buttonIcon));
+            ImageIcon less_ic = new ImageIcon(getClass().getClassLoader().getResource("resources/less.png"));
+            less = new JButton(less_ic);
             less.setContentAreaFilled(false);
             less.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e)
@@ -386,10 +386,20 @@ public class PacienteCrear extends JDialog {
 	                        paciente.setGenPaciente(genero);
 	                        paciente.setEdadPaciente(Integer.parseInt(edadPaciente.getSelectedItem().toString()));
 	                        paciente.setAntecedPaciente(antecedPaciente.getText());
-	                        paciente.setFotoPaciente(urlFoto.getText());
-	                        /*
-	                        COPIAR FOTO A CARPETA DE APLICACIÓN OCULTA EN CARPETA DE USUARIO
-	                        */
+	                        
+	                        File hideDire = new File(".proyectonepal");
+	                        if(!hideDire.exists()){
+	                        	hideDire.mkdir();
+	                        }
+	                        File foto = new File(urlFoto.getText());
+	                        // Extensión
+	                        int dotposition = urlFoto.getText().lastIndexOf(".");
+	                        String extension = urlFoto.getText().substring(dotposition + 1, urlFoto.getText().length()); 
+	                        File foto2 = new File(".proyectonepal/" + nombrePaciente.getText().toLowerCase().replaceAll("\\s","") +""+apellidosPaciente.getText().toLowerCase().replaceAll("\\s","")+"."+extension);
+	                        if(!foto2.exists()) {
+	                        	foto.renameTo(foto2);
+	                        }
+	                        paciente.setFotoPaciente(foto2.getAbsolutePath());
 	
 	                        pacienteDao.crearPaciente(paciente);
 	                        /*

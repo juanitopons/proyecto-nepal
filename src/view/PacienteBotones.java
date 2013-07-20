@@ -123,7 +123,7 @@ public class PacienteBotones extends JPanel {
                         showSelectionMessage();
                     }
                     else {
-                        idpaciente = (int)pacienteTable.getModel().getValueAt(row, 0);
+                        idpaciente = Integer.parseInt(pacienteTable.getModel().getValueAt(row, 1).toString());
                         PacienteAlergias pacienteAlergias = new PacienteAlergias(pacienteView, prop, idpaciente);
                         pacienteAlergias.setVisible(true);
                     }
@@ -134,7 +134,7 @@ public class PacienteBotones extends JPanel {
                         showSelectionMessage();
                     }
                     else {
-                        idpaciente = (int)pacienteTable.getModel().getValueAt(row, 0);
+                        idpaciente = Integer.parseInt(pacienteTable.getModel().getValueAt(row, 1).toString());
                         PacienteVacunas pacienteVacunas = new PacienteVacunas(pacienteView, prop, idpaciente);
                         pacienteVacunas.setVisible(true);
                     }
@@ -145,13 +145,13 @@ public class PacienteBotones extends JPanel {
                         showSelectionMessage();
                     }
                     else {
-                        idpaciente = (int)pacienteTable.getModel().getValueAt(row, 0);
+                        idpaciente = Integer.parseInt(pacienteTable.getModel().getValueAt(row, 1).toString());
                         PacienteVisitas pacienteVisitas = new PacienteVisitas(pacienteView, prop, idpaciente);
                         pacienteVisitas.setVisible(true);
                     }
                     break;
                 case "insertar":
-                    PacienteCrear pacienteCrear = new PacienteCrear(pacienteTable, pacienteView, prop);
+                    new PacienteCrear(pacienteTable, pacienteView, prop);
                     break;
                 case "editar":
                     row = pacienteTable.getSelectedRow();
@@ -159,8 +159,8 @@ public class PacienteBotones extends JPanel {
                         showSelectionMessage();
                     }
                     else {
-                        idpaciente = (int)pacienteTable.getModel().getValueAt(row, 0);
-                        PacienteEditar pacienteEditar = new PacienteEditar(idpaciente, pacienteTable, pacienteView, prop);
+                        idpaciente = Integer.parseInt(pacienteTable.getModel().getValueAt(row, 1).toString());
+                        new PacienteEditar(idpaciente, pacienteTable, pacienteView, prop);
                     }
                     break;
                 case "borrar":
@@ -170,7 +170,7 @@ public class PacienteBotones extends JPanel {
                         showSelectionMessage();
                     }
                     else {
-                        idpaciente = (int)pacienteTable.getModel().getValueAt(row, 0);
+                        idpaciente = Integer.parseInt(pacienteTable.getModel().getValueAt(row, 1).toString());
                         PacienteBorrar pacienteBorrar = new PacienteBorrar(prop, pacienteView, idpaciente);
                         pacienteBorrar.init(pacienteTable, pacienteView);
                     }

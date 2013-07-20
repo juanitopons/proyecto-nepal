@@ -42,6 +42,7 @@ public class AlergiaCrear extends JDialog {
 	private JComboBox alergiasList;
 	private MyProperties prop;
 	private JDialog pacAlCrear;
+	private AlergiaDAO alergiaDao;
 	
 	public AlergiaCrear(JDialog parent, JComboBox alergiasList, MyProperties prop) {
 		super(parent, prop.getProperty("titulo7"), ModalityType.DOCUMENT_MODAL);
@@ -194,7 +195,7 @@ public class AlergiaCrear extends JDialog {
                     	Alergia alergia = new Alergia();
                     	if(checkNombreField()) {
                     		alergia.setNombreAlergia(nombreAlergia.getText());
-                    		AlergiaDAO alergiaDao = new AlergiaDAO(prop);
+                    		alergiaDao = new AlergiaDAO(prop);
                             alergiaDao.crearAlergia(alergia);
                             /*
                              * Actualizamos el JComboBox
@@ -214,6 +215,11 @@ public class AlergiaCrear extends JDialog {
                 }
             }
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {                
+            	try {
+    				alergiaDao.closeConn();
+    			} catch (SQLException e1) {
+    				// TODO Auto-generated catch block
+    			}
             	showErrorMessage();
             }
         }

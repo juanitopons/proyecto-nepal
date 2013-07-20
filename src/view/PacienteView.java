@@ -13,7 +13,10 @@ import java.awt.Font;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 import properties.MyProperties;
 
@@ -28,7 +31,7 @@ public class PacienteView extends JDialog {
     private JLabel pacienteLabel;
     private JPanel pacienteBotones;
     private MyProperties prop;
-    private PacienteDAO pacienteDao = new PacienteDAO();
+    private PacienteDAO pacienteDao;
     
     public PacienteView(JFrame frame, MyProperties prop) {
     	
@@ -43,8 +46,8 @@ public class PacienteView extends JDialog {
         this.add(cabecera, BorderLayout.NORTH);
         
         /* Tabla */
-        pacienteTable = createTablePanel();
-        pacienteTable.setModel(pacienteDao.getTablaPacientes());
+        pacienteDao = new PacienteDAO();
+        pacienteTable = createTablePanel(pacienteDao.getTablaPacientes());
         // Ponemos la tabla dentro de un JScrollPane
         JScrollPane jsp = new JScrollPane(pacienteTable);
         // Añadimos al JDialog
@@ -84,9 +87,17 @@ public class PacienteView extends JDialog {
         return c;
     }
  
-    private JTable createTablePanel() {
+    private JTable createTablePanel(DefaultTableModel model) {
         
-        JTable tp = new JTable();
+        JTable tp = new JTable(model)
+        {
+            //  Returning the Class of each column will allow different
+            //  renderers to be used based on Class
+            public Class getColumnClass(int column)
+            {
+                return getValueAt(0, column).getClass();
+            }
+        };
         float[] hsb;
         /*
          * Cabecera de la tabla
@@ -106,9 +117,35 @@ public class PacienteView extends JDialog {
         /*
          * Caracteristicas de la tabla
          */
-        tp.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tp.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         tp.setFont(new Font("sans-serif",Font.BOLD,12));
-        tp.setRowHeight(22);
+        tp.setRowHeight(82);
+        // Table Render
+        DefaultTableCellRenderer theRenderer = new DefaultTableCellRenderer();
+        theRenderer.setHorizontalAlignment( JLabel.LEFT);
+        theRenderer.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        DefaultTableCellRenderer theRenderer2 = new DefaultTableCellRenderer();
+        theRenderer.setHorizontalAlignment( JLabel.CENTER);
+        //ID
+        TableColumn id = tp.getColumnModel().getColumn(1);
+        id.setWidth(80);
+        id.setResizable(false);
+        id.setPreferredWidth(80);
+        id.setMaxWidth(80);
+        id.setMinWidth(80);
+        id.setCellRenderer(theRenderer);
+        // All, minus images
+        for(int i = 2; i<tp.getColumnCount(); i++) {
+        	TableColumn c = tp.getColumnModel().getColumn(i);
+        	c.setCellRenderer(theRenderer2);
+        }
+        // Image
+        TableColumn image = tp.getColumnModel().getColumn(0);
+        image.setWidth(82);
+        image.setResizable(false);
+        image.setPreferredWidth(82);
+        image.setMaxWidth(82);
+        image.setMinWidth(82);
         
         return tp;
     }

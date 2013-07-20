@@ -74,9 +74,15 @@ public class VisitaBotones extends JPanel {
             String key   = event.getActionCommand();
             switch (key) {
                 case "insertar":
-                    VisitaCrear visitaCrear = new VisitaCrear(visitaTable, pacienteVisitas, prop);
+                    new VisitaCrear(visitaTable, pacienteVisitas, prop);
                     break;
                 case "editar":
+                    row = visitaTable.getSelectedRow();
+                    if (row == -1) {
+                        showSelectionMessage();
+                    }
+                	idvisita = (int)visitaTable.getModel().getValueAt(row, 0);
+                	new VisitaEditar(visitaTable, pacienteVisitas, prop, idvisita);
                 	/*
                     row = visitaTable.getSelectedRow();
                     if (row == -1) {

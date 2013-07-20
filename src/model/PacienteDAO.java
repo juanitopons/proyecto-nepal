@@ -1,9 +1,17 @@
 package model;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,7 +52,7 @@ public class PacienteDAO {
             " WHERE idpaciente = ?";
     
     private static final String READALL = 
-            "SELECT m.idpaciente AS ID, m.nombre AS NOMBRE, " +
+            "SELECT m.foto AS FOTO, m.idpaciente AS ID, m.nombre AS NOMBRE, " +
             "       m.apellidos AS APELLIDOS, " +
             "       a.nombre AS CENTRO " +
             "  FROM pacientes m, orfanatos a " +
@@ -88,6 +96,7 @@ public class PacienteDAO {
             ItemMap p = new ItemMap(rs.getInt("idorfanato"), rs.getString("nombre"));
             orfanatosMap.put(p.getId(), p);
         }
+        oracleConn.close();
         return orfanatosMap;
     }
     
@@ -145,6 +154,7 @@ public class PacienteDAO {
             paciente.setFotoPaciente(rs.getString("foto"));
             paciente.setNombreOrfanato(rs.getString("orfanato"));
         }
+        oracleConn.close();
         return paciente;
     }
     
@@ -218,12 +228,18 @@ public class PacienteDAO {
                 tablaPacientes.addColumn(rsMd.getColumnLabel(i));
             }
             //Creando las filas para el JTable
+            ImageIcon icon;
             while (rs.next()) {
                 Object[] fila = new Object[numeroColumnas];
-                fila[0] = rs.getInt("ID");
-                fila[1] = rs.getString("NOMBRE");
-                fila[2] = rs.getString("APELLIDOS");
-                fila[3] = rs.getString("CENTRO");
+                fila[1] = rs.getInt("ID");
+                icon = new ImageIcon(rs.getString("FOTO"));
+                Image img = icon.getImage();  
+                Image newimg = img.getScaledInstance(80, 80,  java.awt.Image.SCALE_SMOOTH);  
+                icon = new ImageIcon(newimg);  
+                fila[0] = icon;
+                fila[2] = rs.getString("NOMBRE");
+                fila[3] = rs.getString("APELLIDOS");
+                fila[4] = rs.getString("CENTRO");
 
                 tablaPacientes.addRow(fila);
             }
@@ -231,6 +247,7 @@ public class PacienteDAO {
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
             System.out.println("MPacientesDAO::getTablaPacientes -- " + e.getMessage());
+            oracleConn.close();
         }
         finally {
             return tablaPacientes;

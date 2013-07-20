@@ -180,8 +180,8 @@ public class PacienteAlergiaCrear extends JDialog {
             moreless.add(idAlergia);
             //botones mas menos
             JButton more, less;
-            BufferedImage buttonIcon = ImageIO.read(new File("src/resources/plus.png"));
-            more = new JButton(new ImageIcon(buttonIcon));
+            ImageIcon plus = new ImageIcon(getClass().getClassLoader().getResource("resources/plus.png"));
+            more = new JButton(plus);
             more.setContentAreaFilled(false);
             more.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e)
@@ -197,9 +197,8 @@ public class PacienteAlergiaCrear extends JDialog {
             more.setPreferredSize(new Dimension(16, 16));
             moreless.add(more);
             moreless.add(Box.createHorizontalStrut(5));
-            
-            buttonIcon = ImageIO.read(new File("src/resources/less.png"));
-            less = new JButton(new ImageIcon(buttonIcon));
+            ImageIcon less_ic = new ImageIcon(getClass().getClassLoader().getResource("resources/less.png"));
+            less = new JButton(less_ic);
             less.setContentAreaFilled(false);
             less.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e)
@@ -263,7 +262,7 @@ public class PacienteAlergiaCrear extends JDialog {
             form.add(fechaPanel);
         }
         catch (Exception e) {
-        	showErrorMessage();
+        	e.printStackTrace();
         }
         finally {
             return form;

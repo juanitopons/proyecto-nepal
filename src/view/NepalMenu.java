@@ -33,7 +33,7 @@ public class NepalMenu extends JMenuBar {
     private JRadioButtonMenuItem [] languageRadioButton = new JRadioButtonMenuItem[2];
     private String [] languageButtonName = { "Español", "Inglés" };
     private String [] languageButtonAction = { "spanish", "english" };
-    private String [] languageButtonIcon = { "src/resources/sp.png", "src/resources/en.png" };
+    private String [] languageButtonIcon = { "resources/sp.png", "resources/en.png" };
     
     public void cambiarIdioma(MyProperties prop) {
     	//.setText a todo lo que deba hacerse setText (mirar Strings)
@@ -104,7 +104,7 @@ public class NepalMenu extends JMenuBar {
             //toolsItem[0].setActionCommand(toolsItemAction[0]);
         	Icon icon;
             for (int i = 0; i < languageRadioButton.length; i++) {
-            	icon = new ImageIcon(languageButtonIcon[i]);
+            	icon = new ImageIcon(getClass().getClassLoader().getResource(languageButtonIcon[i]));
 	            languageRadioButton[i] = new JRadioButtonMenuItem(icon);
 	            languageRadioButton[i].setText(languageButtonName[i]);
 	            languageRadioButton[i].setHorizontalTextPosition(JMenuItem.RIGHT);

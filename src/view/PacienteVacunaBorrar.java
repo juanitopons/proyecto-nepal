@@ -69,6 +69,11 @@ public class PacienteVacunaBorrar {
                 }
         	}
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+        	try {
+				vacunaDao.closeConn();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+			}
         	errorMessage();
         }
     }

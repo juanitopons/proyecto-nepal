@@ -40,6 +40,7 @@ public class VacunaCrear extends JDialog {
 	private JComboBox vacunasList;
 	private MyProperties prop;
 	private JDialog pacVacCrear;
+	private VacunaDAO vacunaDao;
 	
 	public VacunaCrear(JDialog parent, JComboBox vacunasList, MyProperties prop) {
 		super(parent, prop.getProperty("titulo10"), ModalityType.DOCUMENT_MODAL);
@@ -210,7 +211,7 @@ public class VacunaCrear extends JDialog {
                     	Vacuna vacuna = new Vacuna();
                     	if(checkNombreField()) {
                     		vacuna.setNombreVacuna(nombreVacuna.getText());
-                    		VacunaDAO vacunaDao = new VacunaDAO(prop);
+                    		vacunaDao = new VacunaDAO(prop);
                             vacunaDao.crearVacuna(vacuna);
                             /*
                              * Actualizamos el JComboBox
@@ -230,6 +231,11 @@ public class VacunaCrear extends JDialog {
                 }
             }
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {                
+            	try {
+    				vacunaDao.closeConn();
+    			} catch (SQLException e1) {
+    				// TODO Auto-generated catch block
+    			}
             	showErrorMessage();
             }
         }

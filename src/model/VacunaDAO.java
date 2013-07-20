@@ -97,6 +97,7 @@ public class VacunaDAO {
             ItemMap p = new ItemMap(rs.getInt("idvacuna"), rs.getString("nombre"));
             orfanatosMap.put(p.getId(), p);
         }
+        oracleConn.close();
         return orfanatosMap;
     }
     
@@ -239,6 +240,7 @@ public class VacunaDAO {
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
             System.out.println("MVisitasDAO::getTablaVisitas -- " + e.getMessage());
+            oracleConn.close();
         }
         finally {
             return tablaVisitas;

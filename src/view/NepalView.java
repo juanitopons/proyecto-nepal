@@ -6,6 +6,8 @@ package view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,6 +33,8 @@ public class NepalView extends JFrame {
         menu = new NepalMenu();
         
         //menu.setMenuActionListener(new MenuActionListener);
+        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/nepal_ico.jpg"));
+        this.setIconImage(icon.getImage());
         this.setJMenuBar(menu);
         
         Container cp = this.getContentPane();

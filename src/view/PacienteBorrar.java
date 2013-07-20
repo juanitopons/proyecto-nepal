@@ -79,6 +79,12 @@ public class PacienteBorrar {
                 }
         	}
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+        	try {
+				pacienteDao.closeConn();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         	errorMessage(pacienteView);
         }
     }

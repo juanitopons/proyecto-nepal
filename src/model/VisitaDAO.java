@@ -48,7 +48,7 @@ public class VisitaDAO {
     private static final String READ = 
             "SELECT idvisita, idpaciente, fechavisita, pelo, vision, oidos, dientes, higiene, altura, peso, imc, fc, tamax, tamin, observaciones " +
             " FROM visitas" +
-            " WHERE idvisita = ?";
+            " WHERE idvisita = ? AND idpaciente = ?";
     
     private static final String READALL = 
             "SELECT idvisita AS ID, fechavisita AS FECHA, pelo AS PELO, vision AS VISTA, oidos AS OIDOS, dientes AS DIENTES, higiene AS HIGIENE, altura AS ALT, peso AS PESO, imc AS IMC, fc AS FC, tamax AS TAMX, tamin AS TAMIN, observaciones AS OBSERVACIONES " +
@@ -67,9 +67,16 @@ public class VisitaDAO {
             " WHERE idvisita = ?";
     
     private MyProperties prop;
+    private Connection oracleConn;
 
     public VisitaDAO(MyProperties prop) {
     	this.prop = prop;
+    }
+    
+    public void closeConn() throws SQLException {
+    	oracleConn.commit();
+        oracleConn.setAutoCommit(true);
+        oracleConn.close();
     }
     
     public void crearVisita(Visita visita) throws 
@@ -79,7 +86,7 @@ public class VisitaDAO {
 		* Conexion a la base de datos
 		*/
 		Class.forName(DRIVER).newInstance();
-		Connection oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
+		oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
 		   
 		oracleConn.setAutoCommit(false);
 		// Sentencia de insert
@@ -105,23 +112,24 @@ public class VisitaDAO {
 		oracleConn.close();
     }
     
-    public Visita leerVisita(int idVisita) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, ParseException {
+    public Visita leerVisita(int idVisita, int idpaciente) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, ParseException {
         
         Visita visita = new Visita();
         //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
       
         Class.forName(DRIVER).newInstance();
-        Connection oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
+        oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
            
         // Sentencia de insert
         PreparedStatement read = oracleConn.prepareStatement(READ);
         read.setInt(1, idVisita);
+        read.setInt(2,  idpaciente);
         ResultSet rs = read.executeQuery();
         
         if (rs.next()) {	
         	visita.setIdVisita(rs.getInt("idvisita"));
     		visita.setIdPaciente(rs.getInt("idpaciente"));
-    		visita.setFecha(rs.getTimestamp("fecha"));
+    		visita.setFecha(rs.getTimestamp("fechavisita"));
     		visita.setPelo(rs.getString("pelo"));
     		visita.setVision(rs.getString("vision"));
     		visita.setOidos(rs.getString("oidos"));
@@ -135,16 +143,17 @@ public class VisitaDAO {
     		visita.setTamin(rs.getInt("tamin"));
     		visita.setObservaciones(rs.getString("observaciones"));
         }
+        oracleConn.close();
         return visita;
     }
     
-    public void actualizarPaciente(Visita visita) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public void actualizarVisita(Visita visita) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
 		 //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		 /*
 		 * Conexion a la base de datos
 		 */
 		 Class.forName(DRIVER).newInstance();
-		 Connection oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
+		 oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
 		    
 		 oracleConn.setAutoCommit(false);
 		 // Sentencia de insert
@@ -158,10 +167,11 @@ public class VisitaDAO {
 		 update.setDouble(6, visita.getAltura());
 		 update.setDouble(7, visita.getPeso());
 		 update.setDouble(8, visita.getImc());
-		 update.setInt(8, visita.getFc());
-		 update.setInt(8, visita.getTamax());
-		 update.setInt(8, visita.getTamin());
-		 update.setString(5, visita.getObservaciones());
+		 update.setInt(9, visita.getFc());
+		 update.setInt(10, visita.getTamax());
+		 update.setInt(11, visita.getTamin());
+		 update.setString(12, visita.getObservaciones());
+		 update.setInt(13, visita.getIdVisita());
 		 update.executeUpdate();
 		 
 		 oracleConn.commit();
@@ -174,7 +184,7 @@ public class VisitaDAO {
 		 * Conexion a la base de datos
 		 */
 		 Class.forName(DRIVER).newInstance();
-		 Connection oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
+		 oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
 		     
 		 oracleConn.setAutoCommit(false);
 		 
@@ -197,7 +207,7 @@ public class VisitaDAO {
             * Conexion a la base de datos
             */
             Class.forName(DRIVER).newInstance();
-            Connection oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
+            oracleConn = DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
             
             PreparedStatement s = oracleConn.prepareStatement(READALL);
             s.setInt(1, idpaciente);
@@ -233,6 +243,7 @@ public class VisitaDAO {
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
             System.out.println("MVisitasDAO::getTablaVisitas -- " + e.getMessage());
+            oracleConn.close();
         }
         finally {
             return tablaVisitas;

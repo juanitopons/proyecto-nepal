@@ -71,6 +71,7 @@ public class VisitaCrear extends JDialog {
     private JTable visitaTable;
     private MyProperties prop;
     private PacienteVisitas pacienteVisitas;
+    private VisitaDAO visitaDao;
         
     public VisitaCrear(JTable visitaTable, PacienteVisitas frame, MyProperties prop) {
         //idpaciente = pacienteVisitas.getIdPaciente();
@@ -140,7 +141,7 @@ public class VisitaCrear extends JDialog {
             form.setBackground(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
             
             /* CAMPOS */
-            VisitaDAO visitaDao = new VisitaDAO(prop);
+            visitaDao = new VisitaDAO(prop);
             
             /* IdPaciente */
 
@@ -580,7 +581,6 @@ public class VisitaCrear extends JDialog {
 	                        				if(checkTaminField()) {
 	                        					visita.setTamin(Integer.parseInt(tamin.getText()));
 	                        					visita.setObservaciones(observaciones.getText());
-	                                            VisitaDAO visitaDao = new VisitaDAO(prop);
 	                                            visitaDao.crearVisita(visita);
 	                                            /*
 	                                             * Actualizamos el modelo
@@ -616,6 +616,11 @@ public class VisitaCrear extends JDialog {
                 }
             }
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {                
+            	try {
+    				visitaDao.closeConn();
+    			} catch (SQLException e1) {
+    				// TODO Auto-generated catch block
+    			}
             	showErrorMessage();
             }
         }

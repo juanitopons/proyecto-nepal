@@ -36,6 +36,7 @@ public class OrfanatoCrear extends JDialog {
 	private JComboBox orfanatosList;
 	private MyProperties prop;
 	private JDialog pacienteCrear;
+	private OrfanatoDAO orfanatoDao;
 
 	public OrfanatoCrear(JDialog parent, JComboBox orfanatosList, MyProperties prop) {
 		super(parent, prop.getProperty("titulo7"), ModalityType.DOCUMENT_MODAL);
@@ -165,7 +166,7 @@ public class OrfanatoCrear extends JDialog {
                     	Orfanato orfanato = new Orfanato();
                     	if(checkNombreField()) {
                     		orfanato.setNombreOrfanato(nombreOrfanato.getText());
-                    		OrfanatoDAO orfanatoDao = new OrfanatoDAO();
+                    		orfanatoDao = new OrfanatoDAO();
                             orfanatoDao.crearOrfanato(orfanato);
                             /*
                              * Actualizamos el JComboBox
@@ -186,6 +187,11 @@ public class OrfanatoCrear extends JDialog {
                 }
             }
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {                
+            	try {
+    				orfanatoDao.closeConn();
+    			} catch (SQLException e1) {
+    				// TODO Auto-generated catch block
+    			}
             	showErrorMessage();
             }
         }

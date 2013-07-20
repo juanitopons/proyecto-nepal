@@ -76,6 +76,11 @@ public class VisitaBorrar {
                 }
         	}
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+        	try {
+				visitaDao.closeConn();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+			}
         	errorMessage(pacienteVisitas);
         }
     }

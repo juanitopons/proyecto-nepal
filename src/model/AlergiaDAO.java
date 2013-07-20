@@ -96,6 +96,7 @@ public class AlergiaDAO {
             ItemMap p = new ItemMap(rs.getInt("idalergia"), rs.getString("nombre"));
             orfanatosMap.put(p.getId(), p);
         }
+        oracleConn.close();
         return orfanatosMap;
     }
     
@@ -235,6 +236,7 @@ public class AlergiaDAO {
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
             System.out.println("MVisitasDAO::getTablaVisitas -- " + e.getMessage());
+            oracleConn.close();
         }
         finally {
             return tablaVisitas;

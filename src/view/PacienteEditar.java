@@ -304,7 +304,7 @@ public class PacienteEditar extends JDialog {
         urlFoto.setEditable(false);
         urlFoto.setText(paciente.getFotoPaciente());
         urlFoto.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        urlFoto.setPreferredSize(new Dimension(280, 35));
+        urlFoto.setPreferredSize(new Dimension(400, 35));
         urlFoto.setSize(280, 35);
         urlFoto.setMaximumSize(new Dimension(280, 35));
         // - Add
@@ -361,10 +361,20 @@ public class PacienteEditar extends JDialog {
                         paciente.setGenPaciente(genero);
                         paciente.setEdadPaciente(Integer.parseInt(edadPaciente.getSelectedItem().toString()));
                         paciente.setAntecedPaciente(antecedPaciente.getText());
-                        paciente.setFotoPaciente(urlFoto.getText());
-                        /*
-                        COPIAR FOTO A CARPETA DE APLICACIÓN OCULTA EN CARPETA DE USUARIO
-                        */
+                        
+                        File hideDire = new File(".proyectonepal");
+                        if(!hideDire.exists()){
+                        	hideDire.mkdir();
+                        }
+                        File foto = new File(urlFoto.getText());
+                        // Extensión
+                        int dotposition = urlFoto.getText().lastIndexOf(".");
+                        String extension = urlFoto.getText().substring(dotposition + 1, urlFoto.getText().length()); 
+                        File foto2 = new File(".proyectonepal/" + nombrePaciente.getText().toLowerCase().replaceAll("\\s","") +""+apellidosPaciente.getText().toLowerCase().replaceAll("\\s","")+"."+extension);
+                        if(!foto2.exists()) {
+                        	foto.renameTo(foto2);
+                        }
+                        paciente.setFotoPaciente(foto2.getAbsolutePath());
 
                         pacienteDao.actualizarPaciente(paciente);
                         /*
@@ -401,7 +411,6 @@ public class PacienteEditar extends JDialog {
 					pacienteDao.closeConn();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					System.out.println(e1.getMessage());
 				}
             	String a;
             	a = e.getMessage();
