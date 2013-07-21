@@ -31,9 +31,14 @@ public class Backup {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		this.date = dateFormat.format(date);
 		
-        File hideDire = new File(".proyectonepal/backup");
+        File hideDire = new File(System.getProperty( "user.home" )+"/.proyectonepal");
         if(!hideDire.exists()){
         	hideDire.mkdir();
+        }
+		
+        File hideDire2 = new File(System.getProperty( "user.home" )+"/.proyectonepal/backup");
+        if(!hideDire2.exists()){
+        	hideDire2.mkdir();
         }
 	}
 
@@ -88,19 +93,21 @@ public class Backup {
 				return file.isFile();
 			}
 		});
-		long lastMod = Long.MIN_VALUE;
-		File choise = null;
-		for (File file : files) {
-			if (file.lastModified() > lastMod) {
-				choise = file;
-				lastMod = file.lastModified();
+		if(files!=null) {
+			long lastMod = Long.MIN_VALUE;
+			File choise = null;
+			for (File file : files) {
+				if (file.lastModified() > lastMod) {
+					choise = file;
+					lastMod = file.lastModified();
+				}
 			}
+			if(choise!=null) {
+				return choise.getName();
+			} 
 		}
-		if(choise!=null) {
-			return choise.getName();
-		} else {
-			return "none";
-		}
+		return "none";
+		
 	}
 	
     private void showOkMessage() {
