@@ -4,12 +4,21 @@
  */
 package view;
 
+import model.HighlightRenderer;
 import model.PacienteDAO;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -32,6 +41,8 @@ public class PacienteView extends JDialog {
     private JPanel pacienteBotones;
     private MyProperties prop;
     private PacienteDAO pacienteDao;
+    private JTable tp;
+    private JTextField searchField;
     
     public PacienteView(JFrame frame, MyProperties prop) {
     	
@@ -49,9 +60,64 @@ public class PacienteView extends JDialog {
         pacienteDao = new PacienteDAO();
         pacienteTable = createTablePanel(pacienteDao.getTablaPacientes());
         // Ponemos la tabla dentro de un JScrollPane
+        JPanel searcharea = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        JPanel center = new JPanel(new BorderLayout());
+        GridBagConstraints c = new GridBagConstraints();
         JScrollPane jsp = new JScrollPane(pacienteTable);
+  
+        /* Search */
+        searcharea.setMaximumSize(new Dimension(700, 40));
+        searcharea.setMinimumSize(new Dimension(700, 40));
+        searcharea.setSize(700, 40);
+        searcharea.setPreferredSize(new Dimension(700, 40));
+        searcharea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
+        JLabel searchLabel = new JLabel("Buscar");
+        searchField = new JTextField();
+        searchField.setBounds(10, 100, 150, 20);
+        searchField.setColumns(20);
+        searchField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                String value = searchField.getText();
+
+                for (int row = 0; row <= tp.getRowCount() - 1; row++) {
+
+                    for (int col = 0; col <= tp.getColumnCount() - 1; col++) {
+
+                        if (value.equals(tp.getValueAt(row, col))) {
+
+                            // this will automatically set the view of the scroll in the location of the value
+                            tp.scrollRectToVisible(tp.getCellRect(row, 0, true));
+
+                            // this will automatically set the focus of the searched/selected row/value
+                            tp.setRowSelectionInterval(row, row);
+
+                            for (int i = 0; i <= tp.getColumnCount() - 1; i++) {
+
+                                tp.getColumnModel().getColumn(i).setCellRenderer(new HighlightRenderer());
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        
         // Añadimos al JDialog
-        this.add(jsp, BorderLayout.CENTER);
+        searcharea.add(searchLabel);
+        searcharea.add(searchField);
+        c.fill = GridBagConstraints.HORIZONTAL;
+    	c.gridx = 0;
+    	c.gridy = 0;
+    	c.ipady = 50;
+        center.add(searcharea, BorderLayout.NORTH);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+    	c.gridy = 1;
+    	c.ipady = 0;
+        c.weighty = 1.0;
+        center.add(jsp, BorderLayout.CENTER);
+        this.add(center, BorderLayout.CENTER);
         
         
         /* Botonera */
@@ -89,7 +155,7 @@ public class PacienteView extends JDialog {
  
     private JTable createTablePanel(DefaultTableModel model) {
         
-        JTable tp = new JTable(model)
+        tp = new JTable(model)
         {
             //  Returning the Class of each column will allow different
             //  renderers to be used based on Class

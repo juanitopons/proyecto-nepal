@@ -231,12 +231,19 @@ public class PacienteDAO {
             ImageIcon icon;
             while (rs.next()) {
                 Object[] fila = new Object[numeroColumnas];
+                System.out.println(rs.getString("FOTO").toString().length());
+                if(rs.getString("FOTO").toString().length()<1) {
+                	icon = new ImageIcon(getClass().getClassLoader().getResource("resources/no_foto.jpg"));
+                	fila[0] = icon;
+                	System.out.println("Hola");
+                } else {
+	                icon = new ImageIcon(rs.getString("FOTO"));
+	                Image img = icon.getImage();  
+	                Image newimg = img.getScaledInstance(80, 80,  java.awt.Image.SCALE_SMOOTH);  
+	                icon = new ImageIcon(newimg);  
+	                fila[0] = icon;
+                }
                 fila[1] = rs.getInt("ID");
-                icon = new ImageIcon(rs.getString("FOTO"));
-                Image img = icon.getImage();  
-                Image newimg = img.getScaledInstance(80, 80,  java.awt.Image.SCALE_SMOOTH);  
-                icon = new ImageIcon(newimg);  
-                fila[0] = icon;
                 fila[2] = rs.getString("NOMBRE");
                 fila[3] = rs.getString("APELLIDOS");
                 fila[4] = rs.getString("CENTRO");

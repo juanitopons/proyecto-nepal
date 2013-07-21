@@ -366,15 +366,19 @@ public class PacienteEditar extends JDialog {
                         if(!hideDire.exists()){
                         	hideDire.mkdir();
                         }
-                        File foto = new File(urlFoto.getText());
-                        // Extensión
-                        int dotposition = urlFoto.getText().lastIndexOf(".");
-                        String extension = urlFoto.getText().substring(dotposition + 1, urlFoto.getText().length()); 
-                        File foto2 = new File(".proyectonepal/" + nombrePaciente.getText().toLowerCase().replaceAll("\\s","") +""+apellidosPaciente.getText().toLowerCase().replaceAll("\\s","")+"."+extension);
-                        if(!foto2.exists()) {
-                        	foto.renameTo(foto2);
+                        if(urlFoto.getText().toString().length()>=1) {
+	                        File foto = new File(urlFoto.getText());
+	                        // Extensión
+	                        int dotposition = urlFoto.getText().lastIndexOf(".");
+	                        String extension = urlFoto.getText().substring(dotposition + 1, urlFoto.getText().length()); 
+	                        File foto2 = new File(".proyectonepal/" + nombrePaciente.getText().toLowerCase().replaceAll("\\s","") +""+apellidosPaciente.getText().toLowerCase().replaceAll("\\s","")+"."+extension);
+	                        if(!foto2.exists()) {
+	                        	foto.renameTo(foto2);
+	                        }
+	                        paciente.setFotoPaciente(foto2.getAbsolutePath());
+                        } else {
+                        	paciente.setFotoPaciente(urlFoto.getText());
                         }
-                        paciente.setFotoPaciente(foto2.getAbsolutePath());
 
                         pacienteDao.actualizarPaciente(paciente);
                         /*
