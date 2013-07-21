@@ -16,6 +16,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.text.View;
 
+import model.Backup;
+
 import properties.MyProperties;
 
 /**
@@ -40,7 +42,8 @@ public class NepalController {
             String key  = event.getActionCommand();
             switch (key) {
                 case "menuExportar":
-                    System.out.println("MenuActionListener: Accion '" + key + "' no implementada.");
+                    Backup backup = new Backup(v);
+                    backup.makeBackup();
                     break;
                 case "menuExit":
                     System.exit(0);

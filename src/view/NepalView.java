@@ -6,6 +6,9 @@ package view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -14,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import model.Backup;
 
 /**
  *
@@ -51,7 +56,19 @@ public class NepalView extends JFrame {
         // Otra forma de decir que si se cierra la ventana finalice la aplicacion      
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(new Dimension(600,600));      
-        setVisible(true);           
+        setVisible(true);    
+        
+        // BackUp
+        Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		String todayDate = dateFormat.format(date)+".sql";
+        Backup backup = new Backup(this);
+        
+        /* Check if already had a backup for today */
+        System.out.println(backup.getLastBackup()+" "+ todayDate);
+        if(!(backup.getLastBackup().equalsIgnoreCase(todayDate))) {
+        	backup.makeBackup();
+        }
     }
     
     public JFrame getFrame() {

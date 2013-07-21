@@ -45,12 +45,14 @@ public class PacienteCrear extends JDialog {
     private JTable pacienteTable;
     private MyProperties prop;
     private PacienteDAO pacienteDao;
+    private PacienteView pacienteView;
     //private HashMap<String, Integer> listaClientes = new HashMap();
     //private Object [] claves;
         
     public PacienteCrear(JTable pacienteTable, PacienteView frame, MyProperties prop) {
             
     	super(frame, prop.getProperty("titulo4"), ModalityType.DOCUMENT_MODAL);
+    	this.pacienteView = frame;
         this.prop = prop;
         this.pacienteTable = pacienteTable;
         this.setSize(600, 500);
@@ -490,8 +492,8 @@ public class PacienteCrear extends JDialog {
                 options,
                 prop.getProperty("cerrar"));
     	JDialog dialog = new JDialog();
-    	dialog = infoPane.createDialog(dialog, prop.getProperty("error"));
-    	dialog.setLocationRelativeTo(dialog);
+    	dialog = infoPane.createDialog(pacienteView, prop.getProperty("error"));
+    	dialog.setLocationRelativeTo(pacienteView);
     	dialog.setVisible(true);
     }
 }
